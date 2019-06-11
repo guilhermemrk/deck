@@ -6,9 +6,8 @@ var cards = numDeck*52
 console.log(`Decks: ${numDeck}\nCards: ${cards} (52 per deck)`);
 
 while (i = 1) {
-  var option = readline.question("Select an option:\n\n1- Remove a card\n2- Calculate probability")
-  // var iOption = Convert.ToInt32(option);
-
+  let option = readline.question("Select an option:\n\n1- Remove a card\n2- Calculate probability\n\nPress any other key to exit.")
+  
   if (option = '1'){
     var justKidding = readline.question('What card would you like to remove?')
     cards--
@@ -19,6 +18,6 @@ while (i = 1) {
     console.log(`You selected ${selected}!`)
     console.log(`The probability of pulling ${selected} is ${1/cards}`);
   } else {
-
+    process.exit(1)
   }
 }
