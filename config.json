@@ -1,4 +1,7 @@
 {
-  "locale": "en",
-  "cardsPerDeck": 52
+  "locale": "pt",
+  "projectName": "DeckProject",
+  "projectVersion": "v1.0.13062019",
+  "projectLibs": "Node.js, readline",
+  "projectAuthor": "Guilherme Ramos"
 }

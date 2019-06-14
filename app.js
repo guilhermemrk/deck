@@ -7,48 +7,27 @@ const prefix = ' > '
 class Deck {
   constructor() {
     this.deck = [];
-
     const suits = [l.hearts, l.spades, l.clubs, l.diamonds];
     const values = [l.ace, 2, 3, 4, 5, 6, 7, 8, 9, 10, l.jack, l.queen, l.king];
-
     for (let suit in suits) {
       for (let value in values) {
         this.deck.push(values[value]+ ' ' + l.of + ' ' + suits[suit]);
       }
     }
   }
-
-  shuffle(){
-    const { deck } = this;
-    let m = deck.length, i;
-
-    while(m){
-      i = Math.floor(Math.random() * m--);
-
-      [deck[m], deck[i]] = [deck[i], deck[m]];
-    }
-
-    return this;
-  }
 }
-
 // Remove-a-card function
 function removeA(arr) {
     var what, a = arguments, L = a.length, ax;
     while (L > 1 && arr.length) {
         what = a[--L];
-        while ((ax = arr.indexOf(what)) !== -1) {
-            arr.splice(ax, 1);
-        }
+        if (arr.indexOf(what) !== -1){
+          ax = arr.indexOf(what)
+          arr.splice(ax, 1)
+        } else {}
     }
     return arr;
 }
-
-// Deal-a-card function
-function deal() {
-
-}
-
 // Duplicate deck function
 function repeat(array, n){
     var out = [];
@@ -57,103 +36,106 @@ function repeat(array, n){
     }
     return out;
 }
-
 const deck1 = new Deck();
 const dTemplate = new Deck();
 var dt = dTemplate.deck;
 var originalArray = deck1.deck;
-
-console.log(` How many decks?`);
+console.log(` ${l.howMany}`);
 var numDeck = parseInt(readline.question(prefix))
-
 var array = repeat(originalArray, numDeck);
-console.log(` ${numDeck} deck/s created, with 52 cards each (${array.length} total).`);
+var count = {};
+array.forEach(function(i) { count[i] = (count[i]||0) + 1;});
+console.log(` ${numDeck} ${l.HowManyCreated} (${array.length} ${l.cardTotal}).`);
 var deckFloat = parseInt(array.length/52)
-
 while (true) {
-  console.log(` Choose an option!`);
+  console.log(` ${l.chooseOption}`);
   console.log();
-  console.log(` 1- Remove a card.`);
-  console.log(` 2- Add a card.`);
-  console.log(` 3- Show deck.`);
-  console.log(` 4- ?`);
-  console.log(` 5- Calculate probability.`);
+  console.log(` 1 - ${l.optionOne}.`);
+  console.log(` 2 - ${l.optionTwo}.`);
+  console.log(` 3 - ${l.optionThree}.`);
+  console.log(` 4 - ${l.optionFour}.`);
+  console.log(` 5 - ${l.optionFive}.`);
+  console.log(` 6 - ${l.aboutThisScript}.`);
   console.log();
-  console.log(` Press any other key to exit.`);
+  console.log(` ${l.pressExit}.`);
   console.log();
-
   let option = readline.question(prefix);
-
   if (option === '1') {
-    console.log(` What card would you like to remove?`);
-    // THIS IF IS DELETING EVERY CARD WITH THAT VALUE
+    console.log(` ${l.whatRemove}?`);
     console.log();
-
     let wRem = readline.question(prefix);
-
     let remContain = array.includes(wRem);
-
     if (remContain == true) {
       removeA(array, wRem)
-      console.log(` ${wRem} was removed from the deck. ${array.length} cards left.`);
+      console.log(` [${wRem}] ${l.gotRemoved}. ${array.length} ${l.cardsLeft}.`);
+      count[wRem]--
       let wait = readline.question(prefix)
       console.log();
     } else {
-      console.log(` There is no ${wRem} in this deck. Canceled.`)
+      console.log(` ${l.thereIsNo} [${wRem}] ${l.inThisDeck}. ${l.canceled}.`)
       let wait = readline.question(prefix)
       console.log();
     }
-
   }
   else if (option === '2') {
-    console.log(` What card would you like to add?`);
+    console.log(` ${l.whatAdd}?`);
     console.log();
-
     let wAdd = readline.question(prefix);
     let remContain = dt.includes(wAdd);
-
     if (remContain == true) {
       array.push(wAdd)
-      console.log(` ${wAdd} was add to the deck.`);
+      console.log(` [${wAdd}] ${l.wasAdded}.`);
+      count[wAdd]++
       let wait = readline.question(prefix)
       console.log();
     } else {
-      console.log(` ${wAdd} is an invalid card.`)
+      console.log(` [${wAdd}] ${l.isInvalid}.`)
       let wait = readline.question(prefix)
       console.log();
     }
   }
   else if (option === '3') {
-    console.log(array);
-    console.log(` ${deckFloat} decks, ${array.length} cards total.`);
+    console.log(count);
+    console.log();
+    console.log(` ${deckFloat} ${l.deck}s, ${array.length} ${l.cardTotal}.`);
     let wait = readline.question(prefix)
     console.log();
   }
   else if (option === '4') {
-    // Dunno
+    console.log(` ${l.whatCheckDup}?`);
+    let answer = readline.question(prefix);
+    console.log();
+    console.log(` ${l.thereIsAre} ${count[answer]} [${answer}] ${l.inThisPool}.`);
+    console.log();
+    let wait = readline.question(prefix)
   }
   else if (option === '5') {
-    console.log(` Which card would you like to pull?`)
+    console.log(` ${l.whichPull}?`)
     let pullCard = readline.question(prefix)
-    // let dtl = dt.toLowerCase()
-    // let remContain = dtl.includes(pullCard.toLowerCase());
-    let remContain = dt.includes(pullCard);
-
+    let remContain = dt.includes(pullCard)
     if (remContain == true) {
-      // add a var that tells you how many of those there is in the card pool, I'll use pNum as a placeholder
-      pNum = 1;
-
-      var probability = (pNum/array.length)*100
-      console.log(` The probability of pulling the ${pullCard} is ~${probability.toFixed(2)}%.`);
+      var probability = (count[pullCard]/array.length)*100
+      console.log(` ${l.theProbabilityOf} [${pullCard}] ${l.is} ~${probability.toFixed(2)}%.`);
       let wait = readline.question(prefix)
       console.log();
     } else {
-      console.log(` ${pullCard} is an invalid card.`)
+      console.log(` ${pullCard} ${l.isInvalid}.`)
       let wait = readline.question(prefix)
       console.log();
     }
+  }
+  else if (option === '6') {
+    console.log(` ${l.aboutThisScript}`);
+    console.log(` ---------------------------`);
+    console.log(` ${l.projectName}: ${c.projectName}`);
+    console.log(` ${l.projectVersion}: ${c.projectVersion}`);
+    console.log(` ${l.projectLibs}: ${c.projectLibs}`);
+    console.log(` ${l.projectAuthor}: ${c.projectAuthor}`);
+    console.log(` ${l.projectLocale}: ${c.locale} (${c.locale}.json)`);
+    console.log(` ${l.projectDescription}: ${l.projectDescriptionText}`);
+    console.log();
+    let wait = readline.question(prefix)
   } else {
     process.exit(1)
   }
-
 }
